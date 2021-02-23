@@ -1,5 +1,4 @@
-
-let showWhosThere = async() => {
+let showWhosThere = async() => { 
     let urlBookings : string = "https://app.1-50-office.de/api/bookings";
     let urlLocations : string = "https://app.1-50-office.de/api/locations";
     let urlFloors : string = "https://app.1-50-office.de/api/floors";
@@ -16,29 +15,42 @@ let showWhosThere = async() => {
             res => res.json()
         ) 
     }
-
-    const onlyUnique = (value, index, self) => {
-        return self.indexOf(value) === index;
-    };
-
-    let bookingsAPIResponse = await getBookings();
     let roomsAPIResponse = await getRooms();
-   
-    console.log("full response: ", bookingsAPIResponse);
-    let bookingInfo = [];
-    bookingsAPIResponse["hydra:member"].forEach(booking => {
-        if (new Date(booking.from).toDateString() === new Date().toDateString()) {
-            roomsAPIResponse["hydra:member"].forEach(room => {
-                room.seats.forEach(seat => {
-                    if (booking.seat.id === seat.id) {
-                        bookingInfo[booking.user.lastName] = room.name;
-                    }
-                });
-            });
-        }
-    });
 
-    console.log("bookingInfo: ", bookingInfo);
+    const createPreviewContainer = () => {
+        let preview = document.createElement("div");
+        preview.style.height = "200px";
+        preview.style.width = "400px";
+        preview.style.background = "white";
+        preview.style.position = "fixed";
+        preview.style.bottom = "0";
+        preview.style.right = "0"; 
+        preview.style.zIndex = "100";
+        preview.style.overflowY = "auto";
+        return preview;
+    };
+    let preview = createPreviewContainer();
+    
+    getBookings()
+    .then((bookingsAPIResponse) => {
+        let bookings = bookingsAPIResponse["hydra:member"];
+        bookings.forEach(booking => {
+            if (new Date(booking.from).toDateString() === new Date().toDateString()) {
+                roomsAPIResponse["hydra:member"].forEach(room => {
+                    room.seats.forEach(seat => {
+                        if (booking.seat.id === seat.id) {
+                            var bookingElement = document.createElement("p");
+                            var bookingInfo = document.createTextNode(room.name + ' : ' + booking.user.lastName);
+                            bookingElement.appendChild(bookingInfo);
+                            preview.appendChild(bookingElement) ; 
+                        }
+                    });
+                });  
+            } 
+        });
+        document.body.appendChild(preview);
+        console.log("full response: ", bookingsAPIResponse);
+    })  
 }
 
 showWhosThere();
