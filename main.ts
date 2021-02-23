@@ -27,6 +27,8 @@ let showWhosThere = async() => {
         preview.style.right = "0"; 
         preview.style.zIndex = "100";
         preview.style.overflowY = "auto";
+        preview.style.border = "1ppx solid #dddddd";
+        preview.style.padding = "5px";
         return preview;
     };
     let preview = createPreviewContainer();
