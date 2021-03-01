@@ -19,24 +19,26 @@ let showWhosThere = () => __awaiter(this, void 0, void 0, function* () {
         return fetch(urlRooms).then(res => res.json());
     });
     let roomsAPIResponse = yield getRooms();
+    const floorSelectorBlock = document.querySelector("#app > div > div > div:nth-child(1) > div.row.ml-0.mr-0.mb-5.text-center.content-wrapper > div:nth-child(2)");
+    const layout = `
+    <p style="font-size:1.25rem; margin-top: 15px;">    
+        <img src="/build/images/building-light.svg" width="24" height="24" class="headline-icon">    
+        Today in the office:
+    </p>
+    <div style="height: 200px; width: auto; background: white; bottom: 0px; right: 0px; z-index: 100; overflow-y: auto; padding: 5px; font-family: PT Sans,sans-serif;">
+        
+    </div>
+    `;
     const createPreviewContainer = () => {
         let preview = document.createElement("div");
-        preview.style.height = "200px";
-        preview.style.width = "400px";
-        preview.style.background = "white";
-        preview.style.position = "fixed";
-        preview.style.bottom = "0";
-        preview.style.right = "0";
-        preview.style.zIndex = "100";
-        preview.style.overflowY = "auto";
-        preview.style.border = "1ppx solid #dddddd";
-        preview.style.padding = "5px";
         return preview;
     };
     let preview = createPreviewContainer();
+    preview.insertAdjacentHTML('beforeend', layout);
     getBookings()
         .then((bookingsAPIResponse) => {
         let bookings = bookingsAPIResponse["hydra:member"];
+        floorSelectorBlock.appendChild(preview);
         bookings.forEach(booking => {
             if (new Date(booking.from).toDateString() === new Date().toDateString()) {
                 roomsAPIResponse["hydra:member"].forEach(room => {
@@ -44,14 +46,14 @@ let showWhosThere = () => __awaiter(this, void 0, void 0, function* () {
                         if (booking.seat.id === seat.id) {
                             var bookingElement = document.createElement("p");
                             var bookingInfo = document.createTextNode(room.name + ' : ' + booking.user.lastName);
+                            //preview.querySelector("div:nth-child(3) > p > img").style.background = booking.user.lastName == "Noel" && "red";
                             bookingElement.appendChild(bookingInfo);
-                            preview.appendChild(bookingElement);
+                            preview.querySelector("div:nth-child(3) > div").appendChild(bookingElement);
                         }
                     });
                 });
             }
         });
-        document.body.appendChild(preview);
         console.log("full response: ", bookingsAPIResponse);
     });
 });
