@@ -19,7 +19,6 @@ let showWhosThere = () => __awaiter(this, void 0, void 0, function* () {
         return fetch(urlRooms).then(res => res.json());
     });
     let roomsAPIResponse = yield getRooms();
-    const floorSelectorBlock = document.querySelector("#app > div > div > div:nth-child(1) > div.row.ml-0.mr-0.mb-5.text-center.content-wrapper > div:nth-child(2)");
     const layout = `
     <p style="font-size:1.25rem; margin-top: 15px;">    
         <img src="/build/images/building-light.svg" width="24" height="24" class="headline-icon">    
@@ -38,6 +37,7 @@ let showWhosThere = () => __awaiter(this, void 0, void 0, function* () {
     getBookings()
         .then((bookingsAPIResponse) => {
         let bookings = bookingsAPIResponse["hydra:member"];
+        const floorSelectorBlock = document.querySelector("#app > div > div > div:nth-child(1) > div.row.ml-0.mr-0.mb-5.text-center.content-wrapper > div:nth-child(2)");
         floorSelectorBlock.appendChild(preview);
         bookings.forEach(booking => {
             if (new Date(booking.from).toDateString() === new Date().toDateString()) {
