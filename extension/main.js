@@ -7,6 +7,23 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+// ==UserScript==
+// @name        Who's there?
+// @version     0.1.0
+// @description A userscript that let's you see, if your favourite colleague is working in the office
+// @license     MIT
+// @author      Anatolii Tretiakov
+// @namespace   https://github.com/AnatoliiTretiakov/WhosThere
+// @include     https://app.1-50-office.de/*
+// @run-at      document-idle
+// @grant       none
+// @require     https://greasyfork.org/scripts/398877-utils-js/code/utilsjs.js?version=895926
+// @require     https://greasyfork.org/scripts/28721-mutations/code/mutations.js?version=882023
+// @icon        https://github.githubassets.com/pinned-octocat.svg
+// @updateURL   https://raw.githubusercontent.com/AnatoliiTretiakov/WhosThere/main/extension/main.js
+// @downloadURL https://raw.githubusercontent.com/AnatoliiTretiakov/WhosThere/main/extension/main.js
+// ==/UserScript==
+/* global $ on make */
 let showWhosThere = () => __awaiter(this, void 0, void 0, function* () {
     let urlBookings = "https://app.1-50-office.de/api/bookings";
     let urlLocations = "https://app.1-50-office.de/api/locations";
@@ -57,5 +74,11 @@ let showWhosThere = () => __awaiter(this, void 0, void 0, function* () {
         console.log("full response: ", bookingsAPIResponse);
     });
 });
-showWhosThere();
+(() => {
+    "use strict";
+    function init() {
+        showWhosThere();
+    }
+    init();
+})();
 //# sourceMappingURL=main.js.map

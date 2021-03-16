@@ -1,3 +1,20 @@
+// ==UserScript==
+// @name        Who's there?
+// @version     0.1.0
+// @description A userscript that let's you see, if your favourite colleague is working in the office
+// @license     MIT
+// @author      Anatolii Tretiakov
+// @namespace   https://github.com/AnatoliiTretiakov/WhosThere
+// @include     https://app.1-50-office.de/*
+// @run-at      document-idle
+// @grant       none
+// @require     https://greasyfork.org/scripts/398877-utils-js/code/utilsjs.js?version=895926
+// @require     https://greasyfork.org/scripts/28721-mutations/code/mutations.js?version=882023
+// @icon        https://github.githubassets.com/pinned-octocat.svg
+// @updateURL   https://raw.githubusercontent.com/AnatoliiTretiakov/WhosThere/main/extension/main.js
+// @downloadURL https://raw.githubusercontent.com/AnatoliiTretiakov/WhosThere/main/extension/main.js
+// ==/UserScript==
+/* global $ on make */
 let showWhosThere = async() => { 
     let urlBookings : string = "https://app.1-50-office.de/api/bookings";
     let urlLocations : string = "https://app.1-50-office.de/api/locations";
@@ -27,7 +44,7 @@ let showWhosThere = async() => {
     `
     const createPreviewContainer = () => {
         let preview = document.createElement("div");
-  
+
         return preview; 
     };
     let preview = createPreviewContainer();
@@ -56,4 +73,10 @@ let showWhosThere = async() => {
     })  
 }
 
-showWhosThere();
+(() => {
+    "use strict";
+    function init() {
+        showWhosThere(); 
+    }
+    init(); 
+})();
